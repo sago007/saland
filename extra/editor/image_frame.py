@@ -8,6 +8,7 @@ class ImageFrame:
         """Keyword arguments:
         master - The root element that the frame must be attached to
         image - The initial image"""
+        self.master = master
         self.frame = ttk.Frame(master)
         self.canvas = tk.Canvas(self.frame)
         self.xscroll = ttk.Scrollbar(self.frame, orient=tk.HORIZONTAL, command=self.canvas.xview)
@@ -27,8 +28,14 @@ class ImageFrame:
         """
         self.image_file = image
         self.canvas.delete("all")
-        self.canvas.create_image(0, 0, image=self.image_file, anchor=tk.NW)
-        self.canvas.config(scrollregion=(0, 0, self.image_file.width(), self.image_file.height()))
+        if self.image_file:
+            self.canvas.create_image(0, 0, image=self.image_file, anchor=tk.NW)
+            self.canvas.config(scrollregion=(0, 0, self.image_file.width(), self.image_file.height()))
+        else:
+            canvas_width=20
+            canvas_height=20
+            self.canvas.delete("all")
+            self.canvas.config(scrollregion=(0, 0, canvas_width, canvas_height))
 
     def get_frame(self):
         """Retruns a reference to the frame"""
