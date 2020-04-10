@@ -20,11 +20,13 @@ def callback_select(event):
 
 root = tk.Tk()
 treeview = ttk.Treeview(root)
-treeview.pack(expand=tk.YES, fill=tk.BOTH)
+treeview.grid(row=0, column=0, sticky='ns')
 for t in textures:
     treeview.insert('','end',t, text = t)
+root.columnconfigure(1, weight=1)
+root.rowconfigure(0, weight=1)
 treeview.bind('<<TreeviewSelect>>', callback_select)
 imageFrame = ImageFrame(root, None)
-imageFrame.get_frame().pack(expand=tk.YES, fill=tk.BOTH)
+imageFrame.get_frame().grid(row=0, column=1, sticky='nsew')
 
 root.mainloop()
