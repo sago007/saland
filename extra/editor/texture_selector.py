@@ -10,8 +10,27 @@ from tree_frame import *
 BASEDIR = '../..'
 
 import os
-textures = os.listdir(BASEDIR+"/data/textures")
-textures = list(filter(lambda x: x.endswith('.png'), textures))
+#textures_filenames = os.listdir(BASEDIR+"/data/textures")
+#textures = list(filter(lambda x: x.endswith('.png'), textures_filenames))
+#textures.sort()
+
+
+def addFolderToList(theFolder, theList):
+    textures_filenames = os.listdir(BASEDIR+"/data/textures/"+theFolder)
+    for x in textures_filenames:
+        if x.endswith('.png'):
+            theList.append(theFolder+"/"+x)
+    folders = list(filter(lambda x: os.path.isdir(BASEDIR+"/data/textures/"+theFolder+"/"+x), textures_filenames))
+    print(folders)
+    for f in folders:
+        addFolderToList(theFolder+"/"+f, theList)
+
+
+textures = []
+addFolderToList("", textures)
+#folders = list(filter(lambda x: os.path.isdir(BASEDIR+"/data/textures/"+x), textures_filenames))
+#addFolderToList()
+#print(folders)
 
 
 def callback_select(event):
