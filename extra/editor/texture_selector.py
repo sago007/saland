@@ -15,27 +15,41 @@ import os
 #textures.sort()
 
 
-def addFolderToList(theFolder, theList):
+def addFolderToList(theFolder, theList, filter2 = None):
     textures_filenames = os.listdir(BASEDIR+"/data/textures/"+theFolder)
     for x in textures_filenames:
         if x.endswith('.png'):
-            theList.append(theFolder+"/"+x)
+            if not filter2 or filter2 in x or filter2 in theFolder:
+                theList.append(theFolder+"/"+x)
     folders = list(filter(lambda x: os.path.isdir(BASEDIR+"/data/textures/"+theFolder+"/"+x), textures_filenames))
     print(folders)
     for f in folders:
-        addFolderToList(theFolder+"/"+f, theList)
+        addFolderToList(theFolder+"/"+f, theList, filter2)
 
-
-textures = []
-addFolderToList("", textures)
+def populateTree(filter2 = None):
+    textures = []
+    addFolderToList("", textures, filter2)
+    return textures
 #folders = list(filter(lambda x: os.path.isdir(BASEDIR+"/data/textures/"+x), textures_filenames))
 #addFolderToList()
 #print(folders)
 
+textures = populateTree()
 
 def callback_select(event):
+    if not treeview.selection():
+        return
     image = tk.PhotoImage(file=BASEDIR+'/data/textures/'+treeview.selection()[0])
     imageFrame.set_image(image)
+
+
+def callback(sv):
+    print( sv.get() )
+    for i in treeview.get_children():
+        treeview.delete(i)
+    textures = populateTree(sv.get())
+    for t in textures:
+        treeview.insert('','end',t, text = t)
 
 
 root = tk.Tk()
@@ -51,4 +65,8 @@ treeview.bind('<<TreeviewSelect>>', callback_select)
 imageFrame = ImageFrame(root, None)
 imageFrame.get_frame().grid(row=0, column=1, sticky='nsew')
 
+sv = tk.StringVar()
+sv.trace("w", lambda name, index, mode, sv=sv: callback(sv))
+entryTreeFilter = tk.Entry (root, textvariable=sv)
+entryTreeFilter.grid(row=1, column=0, sticky='nsew')
 root.mainloop()
