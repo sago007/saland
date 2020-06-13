@@ -16,6 +16,10 @@ class TreeFrame:
         self.xscroll.grid(row=2, column=0, sticky='ew')
         self.yscroll.grid(row=1, column=2, sticky='ns')
         self.treeview.config(xscrollcommand=self.xscroll.set, yscrollcommand=self.yscroll.set)
+        #Add filter box
+        self.filterString = tk.StringVar()
+        self.filterEntryBox = tk.Entry (self.frame, textvariable=self.filterString)
+        self.filterEntryBox.grid(row=3, column=0, sticky='nsew')
         
 
     def get_treeview(self):

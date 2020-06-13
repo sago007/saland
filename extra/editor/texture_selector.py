@@ -43,7 +43,7 @@ def callback_select(event):
     imageFrame.set_image(image)
 
 
-def callback(sv):
+def callback_filter(sv):
     print( sv.get() )
     for i in treeview.get_children():
         treeview.delete(i)
@@ -65,8 +65,5 @@ treeview.bind('<<TreeviewSelect>>', callback_select)
 imageFrame = ImageFrame(root, None)
 imageFrame.get_frame().grid(row=0, column=1, sticky='nsew')
 
-sv = tk.StringVar()
-sv.trace("w", lambda name, index, mode, sv=sv: callback(sv))
-entryTreeFilter = tk.Entry (root, textvariable=sv)
-entryTreeFilter.grid(row=1, column=0, sticky='nsew')
+treeFrame.filterString.trace("w", lambda name, index, mode, sv=treeFrame.filterString: callback_filter(treeFrame.filterString))
 root.mainloop()
